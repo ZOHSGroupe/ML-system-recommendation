@@ -1,6 +1,6 @@
 FROM python:3
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
 COPY requirements.txt ./
 
@@ -10,4 +10,4 @@ COPY . .
 
 EXPOSE 5000
 
-CMD [ "python", "./src/app.py" ]
+CMD [ "python", "/src/app.py" ]

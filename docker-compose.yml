@@ -1,0 +1,11 @@
+version: '3'
+services:
+  ml_ystem_recommendation:
+    build:
+      context: .
+    volumes:
+      - ./src:/app/src:ro
+    container_name: system_recommendation
+    ports:
+      - "5000:5000"
+
