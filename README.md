@@ -23,7 +23,7 @@ $ source .venv/bin/activate
 $ pip install -r requirements.txt
 ```
 
-* Install the dependencies
+* add execution permission a file entrypoint.sh
 ```
 $ chmod +x /script/entrypoint.sh
 ```
