@@ -22,3 +22,8 @@ $ source .venv/bin/activate
 ```
 $ pip install -r requirements.txt
 ```
+
+* Install the dependencies
+```
+$ chmod +x /script/entrypoint.sh
+```
