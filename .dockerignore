@@ -28,3 +28,5 @@ README.md
 .dockerignore
 docker-compose.yml
 dockerfile
+#test
+test/

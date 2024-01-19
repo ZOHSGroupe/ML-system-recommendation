@@ -12,6 +12,8 @@ import uuid
 from datetime import datetime
 from airflow import DAG
 from airflow.operators.python import PythonOperator
+import time
+import logging
 
 # import model
 model = pickle.load(open('model.pkl', 'rb'))
@@ -22,17 +24,14 @@ def get_data():
 def consumer_data():
     pass
 def producer_data():
-    pass
+    producer = KafkaProducer(
+        bootstrap_servers=['broker:29092'],
+        max_block_ms=5000,
+        value_serializer=lambda v: json.dumps(v).encode('ascii'),
+        key_serializer=lambda v: json.dumps(v).encode('ascii')
+        )
 
-
-
-producer = KafkaProducer(
- bootstrap_servers=['broker:29092'],
- max_block_ms=5000,
- value_serializer=lambda v: json.dumps(v).encode('ascii'),
- key_serializer=lambda v: json.dumps(v).encode('ascii')
-)
-
+ 
 consumer = KafkaConsumer(
  client_id = "client1",
  bootstrap_servers=['broker:29092'],
@@ -48,10 +47,6 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     return "<h1>samir</h1>"
-
-
-
-
 
 
 flask_port = os.environ.get('FLASK_PORT', '5000')
