@@ -22,19 +22,6 @@ predects =0
 
 topic_name = os.environ.get('TOPIC_NAME',"recomendation")
 
-# def recommendation_insurance():
-    
-    
-
-#             # Uncomment the following lines when you have the 'predect' function implemented
-#             result = predect(Seniority, Power, Cylinder_capacity, Value_vehicle, N_doors, Type_fuel, Weight)
-#             print(result)
-
-#         # If no messages are available, return a default value or handle accordingly
-#         return "no data "  # You can change this to an appropriate default value or handle the case when no messages are available
-
-
-
 def predect():
     consumer = KafkaConsumer(
         bootstrap_servers=[bootstrap_servers],
@@ -88,9 +75,6 @@ def predect():
 #         value_serializer=lambda v: json.dumps(v).encode('ascii'),
 #         key_serializer=lambda v: json.dumps(v).encode('ascii')
 #         )
-
-
-
 
 
 
