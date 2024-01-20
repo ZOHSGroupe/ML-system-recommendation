@@ -1,8 +1,8 @@
 from flask import Flask,request,render_template
 from config import Config
 import os
-# import numpy as np
-# import pickle
+import numpy as np
+import pickle
 from kafka import KafkaConsumer
 # from kafka import KafkaProducer
 import json
@@ -12,9 +12,9 @@ import json
 # from time import time
 
 
-# # Import model
-# model = pickle.load(open('model.pkl', 'rb'))
-# scaler = pickle.load(open('minmaxscaler.pkl', 'rb'))
+# Import model
+model = pickle.load(open('model.pkl', 'rb'))
+scaler = pickle.load(open('minmaxscaler.pkl', 'rb'))
 
 bootstrap_servers = 'broker:29092'
 predects =0
@@ -22,7 +22,20 @@ predects =0
 
 topic_name = os.environ.get('TOPIC_NAME',"recomendation")
 
-def recommendation_insurance():
+# def recommendation_insurance():
+    
+    
+
+#             # Uncomment the following lines when you have the 'predect' function implemented
+#             result = predect(Seniority, Power, Cylinder_capacity, Value_vehicle, N_doors, Type_fuel, Weight)
+#             print(result)
+
+#         # If no messages are available, return a default value or handle accordingly
+#         return "no data "  # You can change this to an appropriate default value or handle the case when no messages are available
+
+
+
+def predect():
     consumer = KafkaConsumer(
         bootstrap_servers=[bootstrap_servers],
         value_deserializer=lambda v: json.loads(v.decode('ascii')),
@@ -31,7 +44,7 @@ def recommendation_insurance():
     )
 
     # Subscribe to the specified topic
-    consumer.subscribe(topics=[topic_name])
+    consumer.subscribe(topics=["samir"])
 
     # Fetch messages from the subscribed topic
     for message in consumer:
@@ -51,27 +64,21 @@ def recommendation_insurance():
         N_doors = message_dict['value']['N_doors']
         Type_fuel = type_fuel_dict[message_dict['value']['Type_fuel']]
         Weight = message_dict['value']['Weight']
-        # result = predect(Seniority, Power, Cylinder_capacity, Value_vehicle, N_doors, Type_fuel, Weight)
-        # print(result)  # 
-        final =[Seniority, Power, Cylinder_capacity, Value_vehicle, N_doors, Type_fuel, Weight]
-        return final
+        feature_list = [Seniority, Power, Cylinder_capacity, Value_vehicle, N_doors, Type_fuel, Weight]
+        single_pred = np.array(feature_list).reshape(1, -1)
+        scaled_features = scaler.transform(single_pred)
+        final_pred = model.predict(scaled_features)
+        insurance_dict = {
+            0: 'Civil liability insurance',
+            1: 'Insurance with Damage',
+            3: 'Insurance with all risks'
+        }
+        if final_pred[0] in insurance_dict:
+            insurance_type = insurance_dict[final_pred[0]]
+            return insurance_type
+        else:
+            return "Sorry, we are not able to recommend this insurance."
 
-
-# def predect(Seniority, Power, Cylinder_capacity, Value_vehicle, N_doors, Type_fuel, Weight):
-#     feature_list = [Seniority, Power, Cylinder_capacity, Value_vehicle, N_doors, Type_fuel, Weight]
-#     single_pred = np.array(feature_list).reshape(1, -1)
-#     scaled_features = scaler.transform(single_pred)
-#     final_pred = model.predict(scaled_features)  # Fix the typo here
-#     insurance_dict = {
-#         0: 'Civil liability insurance',
-#         1: 'Insurance with Damage',
-#         3: 'Insurance with all risks'
-#     }
-#     if final_pred[0] in insurance_dict:
-#         insurance_type = insurance_dict[final_pred[0]]
-#         return insurance_type
-#     else:
-#         return "Sorry, we are not able to recommend this insurance."
 
 
 # def producer_data():
@@ -91,7 +98,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    result = recommendation_insurance()
+    result = predect()
     return f"<h1>{result}</h1>"
 
 
