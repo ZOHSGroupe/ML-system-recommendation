@@ -35,6 +35,10 @@ $ docker-compose up
 ```
 
 # Docker containers documentaion
+## System Architecture
+
+![System Architecture](https://github.com/ZOHSGroupe/ML-system-recommendation/blob/main/imgs/conception.png)
+
 * after run docker-compose 8 containers are created
 
 Image|Container|Port|Volume|Role-Container
