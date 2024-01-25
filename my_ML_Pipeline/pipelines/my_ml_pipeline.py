@@ -2,6 +2,7 @@ import kfp
 import kfp.components as comp
 import kfp.compiler as compiler
 import kfp.dsl as dsl
+import os
 from components.clustering_to_sepervised import clusturing_and_save_supervised_data
 from components.evaluate_model_stacking import evaluate_model_staking
 from components.evaluate_models_level0 import evaluate_models_level0
@@ -9,6 +10,9 @@ from components.preparation_data import preparation_data_for_clusturing
 from components.train_model_stacking import train_model_staking
 from components.train_test_split import train_test_split
 from components.unbalanced_processing import unbalanced_data_procissing_to_balanced
+
+script_dir = os.path.dirname(os.path.realpath(__file__))
+input_file_yml = os.path.join(script_dir, '..', 'system_recomendation_insurance_pipeline1.yaml')
 
 create_step_preparation_data = kfp.components.create_component_from_func(
     func=preparation_data_for_clusturing,
@@ -84,5 +88,5 @@ def systeme_recomendation_pipeline(data_path: str):
 
         compiler.Compiler().compile(
             pipeline_func=systeme_recomendation_pipeline,
-            package_path='my_ml_pipeline.yaml'
+            package_path= input_file_yml
         )
