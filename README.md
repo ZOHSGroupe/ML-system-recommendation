@@ -151,6 +151,8 @@ $ docker-compose down
     ```
     $ juju status
     ```
+    ![final status](https://github.com/ZOHSGroupe/ML-system-recommendation/blob/main/imgs/shell.png)
+    
 17. **If you see your oidc-gatekeeper/0 unit in juju status output in waiting state with**
     **oidc-gatekeeper/0*         waiting      idle   10.1.121.241                 Waiting for pod startup to complete.**
     **You can reconfigure the public-url configuration for the charm with following commands**
@@ -180,8 +182,18 @@ $ docker-compose down
     ```
 ## finaly Open a browser and visit the following URL:
     ```
-   $ http://10.64.140.43.nip.io
+    $ http://10.64.140.43.nip.io
     ```
+## System recomendation insurance mode  Pipelin on kubflow 
+**Create ML pipline**
+![create pipeline](https://github.com/ZOHSGroupe/ML-system-recommendation/blob/main/imgs/create%20pipeline.png)
+**Upload fil.yml for create pipline** 
+![create pipeline](https://github.com/ZOHSGroupe/ML-system-recommendation/blob/main/imgs/pipelinyml.png)
+**monitoring ML pipeline**
+![create pipeline](https://github.com/ZOHSGroupe/ML-system-recommendation/blob/main/imgs/piplineGraph.png)
+
+
+   
 
 
 
