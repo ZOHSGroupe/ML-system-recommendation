@@ -179,9 +179,9 @@ $ docker-compose down
     $ juju config dex-auth static-password=admin
     ```
 ## finaly Open a browser and visit the following URL:
-   ```
+    ```
    $ http://10.64.140.43.nip.io
-   ```
+    ```
 
 
 
