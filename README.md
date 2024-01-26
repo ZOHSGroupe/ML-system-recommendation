@@ -193,6 +193,10 @@ $ docker-compose down
 **monitoring ML pipeline**
 ![create pipeline](https://github.com/ZOHSGroupe/ML-system-recommendation/blob/main/imgs/piplineGraph.png)
 
+## License
+
+Contract-Service is [GPL licensed](LICENSE).
+
 
    
 
