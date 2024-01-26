@@ -1,5 +1,6 @@
 # ML-system-recommendation
-
+**The techniques used in this project are machine learning**
+![thechnologies](https://github.com/ZOHSGroupe/ML-system-recommendation/blob/main/imgs/technologies.png)
 
 ## Must be you have docker for run containers
 * install docker-descktop  [link](https://docs.docker.com/desktop/install/ubuntu/).
