@@ -89,3 +89,116 @@ $ docker-compose down
 
 8. **PostgreSQL Database for Airflow (`postgres`):**
    - Database server for Apache Airflow.
+
+# setup Kubeflow in azure with use Charmed Kubeflow for run data pipeline
+1. **create instence in azure Linux (ubuntu 22.04) Has at least 4 cores, 32GB RAM and 50GB of disk space available.:**
+2. **For Charmed Kubeflow run this command conecte a instence open locle terminal:**
+   ```
+   $ ssh -i ~/.ssh/myKey.pem -D 9999
+   ```
+3. **Set the SOCKS host to: 127.0.0.1 and port 9999**
+4. **Install MicroK8s**
+   ```
+   $ sudo snap install microk8s --classic --channel=1.26/stable
+   ```
+5. **Now it’s time to configure it, to get it ready for Kubeflow**
+   ```
+   $ sudo usermod -a -G microk8s $USER
+   $ newgrp microk8s
+   ```
+6. **we need to grant ownership of any kubectl configuration files to the user running kubectl. Run this command to do that:**
+   ```
+   $ sudo chown -f -R $USER ~/.kube
+   ```
+7. **Enable MicroK8s addons**
+   ```
+   $ microk8s enable dns hostpath-storage ingress metallb:10.64.140.43-10.64.140.49
+   ```
+8. **we can do is to ask MicroK8s for a status output. Run the following command:**
+   ```
+   $ microk8s status
+   ```
+9. **Install Juju**
+   ```
+   $ sudo snap install juju --classic --channel=3.1/stable
+   ```
+10. **On some machines there might be a missing folder which is required for juju to run correctly. Because of this please make sure to create this folder with:**
+    ```
+    $ mkdir -p ~/.local/share
+    ```
+11. **As a next step we can configure microk8s to work properly with juju by running:**
+    ```
+    $ microk8s config | juju add-k8s my-k8s --client
+    ```
+12. **Now, run the following command to deploy a Juju controller to the Kubernetes we set up with MicroK8s:**
+    ```
+    $ juju bootstrap my-k8s uk8sx
+    ```
+13. **we’ll need to add a model for Kubeflow to the controller**
+    ```
+    $ juju add-model kubeflow
+    ```
+14. **Before deploying kubflow, run these commands:**
+    ```
+    $ sudo sysctl fs.inotify.max_user_instances=1280
+    $ sudo sysctl fs.inotify.max_user_watches=655360
+    ```
+15. **Deploy Charmed Kubeflow usually this will take somewhere between 15 minutes and 1 hour.**
+    ```
+    $ juju deploy kubeflow --trust  --channel=1.8/stable
+    ```
+16. **status of all the components of Juju**
+    ```
+    $ juju status
+    ```
+17. **If you see your oidc-gatekeeper/0 unit in juju status output in waiting state with**
+    **oidc-gatekeeper/0*         waiting      idle   10.1.121.241                 Waiting for pod startup to complete.**
+    **You can reconfigure the public-url configuration for the charm with following commands**
+    ```
+    $ juju config oidc-gatekeeper public-url=""
+    $ juju config oidc-gatekeeper public-url=http://10.64.140.43.nip.io
+    ```
+18. **To see if this is the issue, manually check the state of the pods in the cluster by running**
+    ```
+    $ microk8s kubectl get po -n kubeflow
+    ```
+## Configure Dashboard Access
+
+19. **this command to check the IP address of the Istio ingress gateway load balancer, which is the entry point for our entire bundle:**
+    ```
+    $ microk8s kubectl -n kubeflow get svc istio-ingressgateway-workload -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
+    ```
+20. **configure the bundle a bit so that it supports authentication and authorization.**
+    ```
+    $ juju config dex-auth public-url=http://10.64.140.43.nip.io
+    $ juju config oidc-gatekeeper public-url=http://10.64.140.43.nip.io
+    ```
+21. **enable simple authentication, and set a username and password for your Kubeflow deployment:**
+    ```
+    $ juju config dex-auth static-username=admin
+    $ juju config dex-auth static-password=admin
+    ```
+## finaly Open a browser and visit the following URL:
+   ```
+   $ http://10.64.140.43.nip.io
+   ```
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+    
+   
