@@ -8,13 +8,8 @@ from my_ML_Pipeline.components.train_test_split import train_test_split
 from my_ML_Pipeline.components.unbalanced_processing import unbalanced_data_procissing_to_balanced
 
 default_args = {
-    'owner': 'your_name',
-    'depends_on_past': False,
-    'start_date': datetime(2024, 1, 1),
-    'email_on_failure': False,
-    'email_on_retry': False,
-    'retries': 1,
-    'retry_delay': timedelta(minutes=5),
+    'owner': 'airscholar',
+    'start_date': datetime(2023, 9, 3, 10, 00)
 }
 
 
