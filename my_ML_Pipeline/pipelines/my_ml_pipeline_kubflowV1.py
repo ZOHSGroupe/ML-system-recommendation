@@ -1,5 +1,4 @@
 import kfp
-import kfp.components as comp
 import kfp.compiler as compiler
 import kfp.dsl as dsl
 import os
@@ -12,7 +11,7 @@ from components.train_test_split import train_test_split
 from components.unbalanced_processing import unbalanced_data_procissing_to_balanced
 
 script_dir = os.path.dirname(os.path.realpath(__file__))
-input_file_yml = os.path.join(script_dir, '..', 'system_recomendation_insurance_pipeline1.yaml')
+input_file_yml = os.path.join(script_dir, '..', 'system_recomendation_insurance_pipelinev1.yaml')
 
 create_step_preparation_data = kfp.components.create_component_from_func(
     func=preparation_data_for_clusturing,
