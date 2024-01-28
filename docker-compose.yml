@@ -153,8 +153,7 @@ services:
       - AIRFLOW_WEBSERVER_SECRET_KEY=this_is_a_very_secured_key
     depends_on:
       - airflow
-    command: bash -c "airflow db upgrade && airflow scheduler"
-    restart: always
+    command: bash -c "pip install -r ./requirements.txt && airflow db upgrade && airflow scheduler"
     networks:
       - confluent
 
