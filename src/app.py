@@ -1,20 +1,19 @@
 from flask import Flask,request,render_template
-from config import Config
+# from config import Config
 import os
 import numpy as np
 import pickle
 from kafka import KafkaConsumer
 from kafka import KafkaProducer
 import json
-# from datetime import datetime
-# from airflow import DAG
-# from airflow.operators.python import PythonOperator
 from time import time
 
-
+script_dir = os.path.dirname(os.path.realpath(__file__))
+input_file_model = os.path.join(script_dir, '..', 'model.pkl')
+input_file_minmax = os.path.join(script_dir, '..', 'minmaxscaler.pkl')
 # Import model
-model = pickle.load(open('model.pkl', 'rb'))
-scaler = pickle.load(open('minmaxscaler.pkl', 'rb'))
+model = pickle.load(open(input_file_model, 'rb'))
+scaler = pickle.load(open(input_file_minmax, 'rb'))
 
 bootstrap_servers = 'broker:29092'
 
@@ -90,10 +89,10 @@ def index():
     return f"<h1>samir</h1>"
 
 
-# Get Flask port from environment variable or use default value 5000
-flask_port = os.environ.get('FLASK_PORT', '5000')
+# # Get Flask port from environment variable or use default value 5000
+# flask_port = os.environ.get('FLASK_PORT', '5000')
 
-if __name__ == "__main__":
-    app.secret_key = Config.SECRET_KEY
-    app.run(host='0.0.0.0', port=flask_port, debug=True)
+# if __name__ == "__main__":
+#     app.secret_key = Config.SECRET_KEY
+#     app.run(host='0.0.0.0', port=flask_port, debug=True)
 

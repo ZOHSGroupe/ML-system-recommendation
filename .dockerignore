@@ -32,3 +32,6 @@ dockerfile
 test/
 
 env/
+imgs/
+files_jupyter_notebok/
+LICENSE
